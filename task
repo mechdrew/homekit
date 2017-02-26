@@ -1,0 +1,11 @@
+cd /opt/homekit
+wget http://localhost:8765/picture/1/current/ -O output.jpg
+file=output.jpg
+minimumsize=5000
+actualsize=$(wc -c <"$file")
+if [ $actualsize -ge $minimumsize ]; then
+    echo image download successful
+else
+    wget http://localhost:8765/picture/1/current/ -O output.jpg
+fi
+ffmpeg -i /opt/homekit output.jpg -vf scale=1280:720 /opt/homekit/snapshot.jpg -y
